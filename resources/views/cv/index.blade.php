@@ -22,8 +22,49 @@
     </style>
 </head>
 
+{{-- PERUBAHAN: Menambahkan scroll-pt-20 (scroll-padding-top) agar section tidak tertutup header --}}
+<body class="bg-gray-900 text-gray-100 font-sans scroll-smooth scroll-pt-20">
 
-<body class="bg-gray-900 text-gray-100 font-sans scroll-smooth">
+    {{-- === HEADER / NAVIGASI BARU === --}}
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-sm border-b border-white/10">
+        <nav class="max-w-6xl mx-auto flex items-center justify-between py-4 px-6">
+            
+            <div>
+                <a href="#hero" class="text-xl font-bold text-white hover:text-cyan-400 transition-colors duration-300">
+                    {{ $biodatas->nama ?? 'Portfolio' }}
+                </a>
+            </div>
+
+            <ul class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                <li>
+                    <a href="#about" class="text-gray-300 hover:text-cyan-400 hover:drop-shadow-[0_0_4px_theme(colors.cyan.400)] transition-all duration-300 font-medium">
+                        Tentang Saya
+                    </a>
+                </li>
+                <li>
+                    <a href="#pendidikan" class="text-gray-300 hover:text-cyan-400 hover:drop-shadow-[0_0_4px_theme(colors.cyan.400)] transition-all duration-300 font-medium">
+                        Pendidikan
+                    </a>
+                </li>
+                <li>
+                    <a href="#pengalaman" class="text-gray-300 hover:text-cyan-400 hover:drop-shadow-[0_0_4px_theme(colors.cyan.400)] transition-all duration-300 font-medium">
+                        Pengalaman
+                    </a>
+                </li>
+                <li>
+                    <a href="#keahlian" class="text-gray-300 hover:text-cyan-400 hover:drop-shadow-[0_0_4px_theme(colors.cyan.400)] transition-all duration-300 font-medium">
+                        Keahlian
+                    </a>
+                </li>
+                <li>
+                    <a href="#portfolio" class="text-gray-300 hover:text-cyan-400 hover:drop-shadow-[0_0_4px_theme(colors.cyan.400)] transition-all duration-300 font-medium">
+                        Portfolio
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    {{-- === AKHIR HEADER === --}}
 
 
 {{-- - --
@@ -183,7 +224,7 @@
 
                             <img {{-- Ini adalah "Ternary Operator" Blade yang canggih --}} {{-- 1. Cek apakah path_foto ada
                                 --}} @if($s->foto_skill) {{-- 2. Jika ada, cek tipe_sumber --}}
-                                    src="{{ $s->tipe_sumber == 'storage' ? asset('storage/' . $s->foto_skill) : asset($s->foto_skill) }}"
+                                src="{{ $s->tipe_sumber == 'storage' ? asset('storage/' . $s->foto_skill) : asset($s->foto_skill) }}"
                                 @else {{-- 3. Jika path_foto KOSONG, gunakan fallback --}}
                                 src="{{ asset('images/Foto-profil.png') }}" @endif alt="{{ $s->nama_skill }}"
                                 class="w-16 h-16 rounded-xl object-cover flex-shrink-0 border border-white/10">
@@ -211,9 +252,11 @@
                          data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                         
                         
-                        <div class="flex justify-between items-center mb-2">
-                            <h2 class="text-xl font-semibold text-white">{{ $cert->nama_penghargaan }}</h2>
-                            <span class="text-cyan-400 text-sm flex-shrink-0 ml-2">{{ $cert->tahun }}</span>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-white">{{ $cert->nama_penghargaan }}</h3>
+                            
+                            {{-- PERBAIKAN: Ditambahkan pt-1 (padding-top: 4px) agar sejajar --}}
+                            <span class="text-cyan-400 text-sm flex-shrink-0 ml-4 pt-1">{{ $cert->tahun }}</span>
                         </div>
 
                         <p class="text-gray-400 text-sm mb-1">Pemberi: {{ $cert->pemberi_sertifikat }}</p>
@@ -263,29 +306,7 @@
         </div>
     </section>
 
-    {{-- === SECTION: CONTACT === --}}
-    <section id="contact" class="py-24 px-6 md:px-20 bg-gray-900/40 backdrop-blur-md">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-8 text-cyan-400" data-aos="fade-up">Hubungi Saya</h2>
-            <p class="text-gray-400 mb-10" data-aos="fade-up" data-aos-delay="200">
-                Tertarik bekerja sama atau memiliki pertanyaan?
-            </p>
-            <form action="#" class="max-w-2xl mx-auto space-y-6" data-aos="fade-up" data-aos-delay="300">
 
-                <input type="text" placeholder="Nama"
-                    class="w-full p-4 bg-white/5 rounded-lg border border-white/10 focus:border-cyan-500 focus:bg-white/10 outline-none transition-all duration-300 placeholder-gray-400">
-                <input type="email" placeholder="Email"
-                    class="w-full p-4 bg-white/5 rounded-lg border border-white/10 focus:border-cyan-500 focus:bg-white/10 outline-none transition-all duration-300 placeholder-gray-400">
-                <textarea placeholder="Pesan" rows="5"
-                    class="w-full p-4 bg-white/5 rounded-lg border border-white/10 focus:border-cyan-500 focus:bg-white/10 outline-none transition-all duration-300 placeholder-gray-400"></textarea>
-
-                <button
-                    class="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 rounded-full font-semibold shadow-lg transition-all">
-                    Kirim Pesan
-                </button>
-            </form>
-        </div>
-    </section>
 
     {{-- === FOOTER === --}}
 <footer class="py-12 bg-black/70 border-t border-white/5 backdrop-blur-sm">
@@ -331,7 +352,7 @@
                 </a>
 
                  <a href="https://www.instagram.com/varaxess/" class="text-gray-400 hover:text-cyan-400 transition" aria-label="Instagram">
-                   <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.148-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.314.935 20.644.522 19.86.218 19.094-.08 18.223-.282 16.947-.34C15.667-.398 15.26-.413 12-.413h0zm0 2.163c3.203 0 3.585.012 4.85.07 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.012 3.585-.07 4.85c-.055 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.382-.42.419-.819.679-1.381.896-.422.164-1.057.36-2.227.413-1.266.057-1.646.07-4.85.07s-3.585-.012-4.85-.07c-1.17-.055-1.805-.249-2.227-.413-.562-.217-.96-.477-1.382-.896-.419-.42-.679-.819-.896-1.381-.164.422-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.012-3.585.07-4.85c.055-1.17.249 1.805.413 2.227.217.562.477.96.896 1.382.42-.419.819.679 1.381.896.422.164 1.057.36 2.227.413 1.266-.057 1.646-.07 4.85-.07zM12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162S15.403 5.838 12 5.838zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" clip-rule="evenodd"/></svg>
+                   <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.148-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.314.935 20.644.522 19.86.218 19.094-.08 18.223-.282 16.947-.34C15.667-.398 15.26-.413 12-.413h0zm0 2.163c3.203 0 3.585.012 4.85.07 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.012 3.585-.07 4.85c-.055 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.382-.42.419-.819.679-1.381.896-.422.164-1.057.36-2.227.413-1.266.057-1.646.07-4.85.07s-3.585-.012-4.85-.07c-1.17-.055-1.805-.249-2.227-.413-.562-.217-.96-.477-1.382.896-.419-.42-.679.819-.896-1.381-.164.422-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.012-3.585.07-4.85c.055-1.17.249 1.805.413 2.227.217.562.477.96.896 1.382.42-.419.819.679 1.381.896.422.164 1.057.36 2.227.413 1.266-.057 1.646-.07 4.85-.07zM12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162S15.403 5.838 12 5.838zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" clip-rule="evenodd"/></svg>
                 </a>
             </div>
 
