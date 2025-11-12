@@ -339,30 +339,108 @@
         </div>
     </section>
 
-    {{-- === SECTION: PORTOFOLIO === --}}
-    <section id="portfolio" class="py-24 px-6 md:px-20 bg-gray-900/40 backdrop-blur-md border-b border-white/5">
+{{-- === SECTION: PORTOFOLIO === --}}
+    <section id="portfolio" x-data="{ filter: 'semua' }" class="py-24 px-6 md:px-20 bg-gray-900/40 backdrop-blur-md border-b border-white/5">
         <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-12 text-cyan-400" data-aos="fade-up">Projek Saya</h2>
+            
+            <h2 class="text-4xl font-bold mb-8 text-cyan-400" data-aos="fade-up">Projek Saya</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {{-- Tombol Filter (Kode Anda sudah benar) --}}
+            <div class="flex flex-wrap justify-center gap-4 mb-12" data-aos="fade-up" data-aos-delay="100">
+                <button @click="filter = 'semua'"
+                        :class="{'bg-cyan-500 text-white': filter === 'semua', 'bg-white/5 text-gray-300 hover:bg-white/20': filter !== 'semua'}"
+                        class="px-5 py-2 rounded-full font-medium transition-all duration-300 active:scale-95">
+                    Semua
+                </button>
+                <button @click="filter = 'gambar'"
+                        :class="{'bg-cyan-500 text-white': filter === 'gambar', 'bg-white/5 text-gray-300 hover:bg-white/20': filter !== 'gambar'}"
+                        class="px-5 py-2 rounded-full font-medium transition-all duration-300 active:scale-95">
+                    Gambar
+                </button>
+                <button @click="filter = 'youtube'"
+                        :class="{'bg-cyan-500 text-white': filter === 'youtube', 'bg-white/5 text-gray-300 hover:bg-white/20': filter !== 'youtube'}"
+                        class="px-5 py-2 rounded-full font-medium transition-all duration-300 active:scale-95">
+                    YouTube
+                </button>
+                <button @click="filter = 'reels'"
+                        :class="{'bg-cyan-500 text-white': filter === 'reels', 'bg-white/5 text-gray-300 hover:bg-white/20': filter !== 'reels'}"
+                        class="px-5 py-2 rounded-full font-medium transition-all duration-300 active:scale-95">
+                    Reels
+                </button>
+            </div>
+            {{-- === AKHIR TOMBOL FILTER === --}}
+
+
+            {{-- 3. GRID PORTOFOLIO --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10" data-aos="fade-up" data-aos-delay="200">
                 @foreach($biodatas->portofolios as $prt)
-                    <div class="bg-white/5 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10 hover:border-cyan-400/50 hover:bg-white/10 transition-all duration-300 shadow-lg"
-                        data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
+                    
+                    {{-- === PERBAIKAN LOGIKA ADA DI SINI === --}}
 
-                        <img src="{{ $prt->foto_project == 'storage' ? asset('storage/' . $prt->gambar_project) : asset($prt->gambar_project) }}"
-                            alt="{{ $prt->nama_project ?? 'Project' }}" class="w-full h-56 object-cover">
+                    @php
+                        // Tentukan dulu apakah card ini bisa diklik dan apa link-nya
+                        $isClickable = false;
+                        $linkUrl = '#'; 
 
-                        <div class="p-6 text-left">
-                            <div class="flex justify-between items-center mb-2">
-                                <h3 class="text-xl font-semibold text-white">{{ $prt->nama_project ?? '-' }}</h3>
-                                <span class="text-cyan-400 text-sm flex-shrink-0 ml-2">{{ $prt->tahun ?? '-' }}</span>
+                        if ($prt->tipe_konten == 'youtube' && $prt->link_project) {
+                            $isClickable = true;
+                            $linkUrl = 'https://www.youtube.com/watch?v=' . $prt->link_project;
+                        } 
+                        elseif ($prt->tipe_konten == 'reels' && $prt->link_project) {
+                            $isClickable = true;
+                            $linkUrl = $prt->link_project;
+                        }
+                    @endphp
+
+                    <div x-show="filter === 'semua' || filter === '{{ $prt->tipe_konten }}'"
+                         class="bg-white/5 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10 transition-all duration-300 shadow-lg 
+                                {{-- Tambahkan hover effect hanya jika BISA diklik --}}
+                                @if($isClickable) hover:border-cyan-400/50 hover:bg-white/10 @endif">
+                        
+                        {{-- Logika Thumbnail (Sudah Benar) --}}
+                        @php
+                            $thumbnailUrl = '';
+                            if($prt->tipe_konten == 'youtube' && $prt->link_project) {
+                                $thumbnailUrl = 'https://img.youtube.com/vi/' . $prt->link_project . '/hqdefault.jpg';
+                            } else {
+                                $thumbnailUrl = $prt->foto_project == 'storage' ? asset('storage/' . $prt->gambar_project) : asset($prt->gambar_project);
+                            }
+                        @endphp
+
+                        {{-- Cek apakah bisa diklik --}}
+                        @if($isClickable)
+                            {{-- JIKA BISA DIKLIK: Bungkus konten dengan <a> --}}
+                            <a href="{{ $linkUrl }}" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ $thumbnailUrl }}" alt="{{ $prt->nama_project ?? 'Project' }}" class="w-full h-56 object-cover">
+                                <div class="p-6 text-left">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h3 class="text-xl font-semibold text-white">{{ $prt->nama_project ?? '-' }}</h3>
+                                        <span class="text-cyan-400 text-sm flex-shrink-0 ml-2">{{ $prt->tahun ?? '-' }}</span>
+                                    </div>
+                                    @if($prt->posisi)
+                                        <p class="italic text-gray-400 text-sm mb-1">{{ $prt->posisi }}</p>
+                                    @endif
+                                    <p class="text-gray-300 text-sm">{{ $prt->deskripsi ?? '-' }}</p>
+                                </div>
+                            </a>
+                        @else
+                            {{-- JIKA TIDAK BISA DIKLIK (misal: 'gambar'): Tampilkan konten biasa --}}
+                            <img src="{{ $thumbnailUrl }}" alt="{{ $prt->nama_project ?? 'Project' }}" class="w-full h-56 object-cover">
+                            <div class="p-6 text-left">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-xl font-semibold text-white">{{ $prt->nama_project ?? '-' }}</h3>
+                                    <span class="text-cyan-400 text-sm flex-shrink-0 ml-2">{{ $prt->tahun ?? '-' }}</span>
+                                </div>
+                                @if($prt->posisi)
+                                    <p class="italic text-gray-400 text-sm mb-1">{{ $prt->posisi }}</p>
+                                @endif
+                                <p class="text-gray-300 text-sm">{{ $prt->deskripsi ?? '-' }}</p>
                             </div>
-                            @if($prt->posisi)
-                                <p class="italic text-gray-400 text-sm mb-1">{{ $prt->posisi }}</p>
-                            @endif
-                            <p class="text-gray-300 text-sm">{{ $prt->deskripsi ?? '-' }}</p>
-                        </div>
+                        @endif
+
                     </div>
+                    {{-- === AKHIR PERBAIKAN === --}}
+                    
                 @endforeach
 
                 @if($biodatas->portofolios->isEmpty())
