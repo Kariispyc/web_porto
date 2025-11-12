@@ -15,6 +15,7 @@ class Skill extends Model
         'biodata_id',
         'nama_skill',
         'foto_skill',
+        'sumber_skill',
         'tingkat',
     ];
 

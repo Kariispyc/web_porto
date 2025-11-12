@@ -14,6 +14,9 @@ return new class extends Migration {
             $table->year('tahun')->nullable();
             $table->string('posisi')->nullable();
             $table->string('gambar_project')->nullable();
+            $table->enum('foto_project', ['storage', 'public'])->default('public');
+            $table->enum('tipe_konten', ['gambar', 'youtube', 'reels'])->default('gambar');
+            $table->string('link_project')->nullable();
             $table->text('deskripsi')->nullable();
             $table->timestamps();
         });

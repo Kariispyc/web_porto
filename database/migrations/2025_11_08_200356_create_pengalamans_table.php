@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('posisi')->nullable();
             $table->year('tahun_mulai')->nullable();
             $table->year('tahun_selesai')->nullable();
+            $table->string('bulan', 25)->nullable();
             $table->text('deskripsi')->nullable();
             $table->timestamps();
         });

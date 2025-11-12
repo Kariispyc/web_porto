@@ -18,6 +18,7 @@ class Pengalaman extends Model
         'posisi',
         'tahun_mulai',
         'tahun_selesai',
+        'bulan',
         'deskripsi',
     ];
 

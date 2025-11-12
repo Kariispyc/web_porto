@@ -13,6 +13,7 @@ return new class extends Migration
             $table->foreignId('biodata_id')->constrained('biodatas')->onDelete('cascade');
             $table->string('nama_skill');
             $table->string('foto_skill')->nullable();
+            $table->enum('sumber_skill', ['storage', 'public'])->default('public');
             $table->string('tingkat')->nullable(); // contoh: Beginner, Intermediate, Expert
             $table->timestamps();
         });

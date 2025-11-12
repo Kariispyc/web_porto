@@ -17,6 +17,9 @@ class Portofolio extends Model
         'tahun',
         'posisi',
         'gambar_project',
+        'foto_project',
+        'tipe_konten', 
+        'link_project',
         'deskripsi',
     ];
 
