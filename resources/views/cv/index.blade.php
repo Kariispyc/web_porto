@@ -25,8 +25,10 @@
 {{-- PERUBAHAN: Menambahkan scroll-pt-20 (scroll-padding-top) agar section tidak tertutup header --}}
 <body class="bg-gray-900 text-gray-100 font-sans scroll-smooth scroll-pt-20">
 
-    {{-- === HEADER / NAVIGASI BARU === --}}
-    <header class="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-sm border-b border-white/10">
+    {{-- === HEADER / NAVIGASI BARU (DENGAN MENU MOBILE) === --}}
+
+    {{-- 1. Tambahkan x-data="{ open: false }" untuk inisialisasi Alpine --}}
+    <header x-data="{ open: false }" class="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-sm border-b border-white/10">
         <nav class="max-w-6xl mx-auto flex items-center justify-between py-4 px-6">
             
             <div>
@@ -61,10 +63,74 @@
                         Portfolio
                     </a>
                 </li>
+                {{-- SAYA TAMBAHKAN LINK KONTAK AGAR LENGKAP --}}
+                <li>
+                    <a href="#contact" class="text-gray-300 hover:text-cyan-400 hover:drop-shadow-[0_0_4px_theme(colors.cyan.400)] transition-all duration-300 font-medium">
+                        Kontak
+                    </a>
+                </li>
             </ul>
+
+            <div class="md:hidden"> {{-- Sembunyikan di desktop --}}
+                <button @click="open = !open" class="text-gray-300 hover:text-white transition-transform duration-300" 
+                        :class="{'rotate-180': open}"> {{-- Animasi rotate (opsional) --}}
+                    
+                    {{-- Ikon "Menu" (strip 3) - Tampil saat menu TERTUTUP --}}
+                    <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    
+                    {{-- Ikon "Close" (X) - Tampil saat menu TERBUKA --}}
+                    <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
         </nav>
+
+        {{-- Muncul saat 'open = true' di layar 'md' ke bawah --}}
+        {{-- @click.away="open = false" = Menutup menu jika klik di luar area --}}
+        <div x-show="open" @click.away="open = false" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 transform -translate-y-4"
+             x-transition:enter-end="opacity-100 transform translate-y-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 transform translate-y-0"
+             x-transition:leave-end="opacity-0 transform -translate-y-4"
+             class="md:hidden bg-black/80 backdrop-blur-sm border-t border-white/10"
+             style="display: none;"> {{-- style="display: none;" untuk mencegah "flash" saat load --}}
+            
+            <ul class="flex flex-col items-center py-4">
+                {{-- Tambahkan @click="open = false" agar menu menutup saat link diklik --}}
+                <li>
+                    <a href="#about" @click="open = false" class="block py-3 px-6 text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+                        Tentang Saya
+                    </a>
+                </li>
+                <li>
+                    <a href="#pendidikan" @click="open = false" class="block py-3 px-6 text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+                        Pendidikan
+                    </a>
+                </li>
+                <li>
+                    <a href="#pengalaman" @click="open = false" class="block py-3 px-6 text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+                        Pengalaman
+                    </a>
+                </li>
+                <li>
+                    <a href="#keahlian" @click="open = false" class="block py-3 px-6 text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+                        Keahlian
+                    </a>
+                </li>
+                <li>
+                    <a href="#portfolio" @click="open = false" class="block py-3 px-6 text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+                        Portfolio
+                    </a>
+                </li>
+                <li>
+                    <a href="#contact" @click="open = false" class="block py-3 px-6 text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+                        Kontak
+                    </a>
+                </li>
+            </ul>
+        </div>
     </header>
-    {{-- === AKHIR HEADER === --}}
 
 
 {{-- - --
